@@ -43,7 +43,7 @@ mcp_server/
 
 **1. Clone the repo**
 ```bash
-git clone https://github.com/your-username/mcp-server-template.git
+git clone https://github.com/sachinjadh/mcp-server-template.git
 cd mcp-server-template
 ```
 
