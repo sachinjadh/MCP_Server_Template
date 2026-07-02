@@ -1,61 +1,118 @@
-📘 README
-🧩 Overview
-This project is a reusable Python MCP server template.
-It lets you create MCP servers quickly by adding small tool files without modifying the main server code.
+# 🤖 Python MCP Server Template
 
-The server automatically loads all tools and resources, making it easy to extend and reuse.
+A reusable, plug-and-play template for building [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers in Python.
+Drop in a new tool file and the server picks it up automatically — no boilerplate, no rewiring.
 
-📁 Project Structure
-Code
+---
+
+## 📘 Overview
+
+This template lets you spin up MCP servers quickly by adding small, self-contained tool files — without ever touching the core server code.
+The server auto-discovers and registers all tools and resources at startup, making it trivial to extend and reuse across projects.
+
+---
+
+## 📁 Project Structure
+
+```
 mcp_server/
-  server.py
-  requirements.txt
-  loaders/
-    tool_loader.py
-    resource_loader.py
-  tools/
-    ping.py
-    math_add.py
-  resources/
-    config.json
-⚙️ How It Works
-server.py starts the MCP server.
+├── server.py                  # MCP server entrypoint
+├── requirements.txt
+├── loaders/
+│   ├── tool_loader.py         # Auto-scans /tools and registers @tool() functions
+│   └── resource_loader.py     # Auto-loads .json files from /resources
+├── tools/
+│   ├── ping.py                # Example tool — health check
+│   └── math_add.py            # Example tool — addition
+└── resources/
+    └── config.json            # Example resource — server config
+```
 
-The tool loader scans the /tools folder and auto‑registers any function decorated with @tool().
+---
 
-The resource loader loads any .json file from /resources.
+## ⚙️ How It Works
 
-You only add new tools by creating new Python files in /tools.
+1. `server.py` starts the MCP server
+2. `tool_loader.py` scans the `/tools` folder and auto-registers any function decorated with `@tool()`
+3. `resource_loader.py` loads every `.json` file found in `/resources`
+4. To add new functionality — just drop a new `.py` file in `/tools`. That's it.
 
-🚀 Getting Started
-Install dependencies
-Code
+---
+
+## 🚀 Getting Started
+
+**1. Clone the repo**
+```bash
+git clone https://github.com/your-username/mcp-server-template.git
+cd mcp-server-template
+```
+
+**2. Create a virtual environment**
+```bash
+python -m venv venv
+source venv/bin/activate       # Windows: venv\Scripts\activate
+```
+
+**3. Install dependencies**
+```bash
 pip install -r requirements.txt
-Run the server
-Code
-mcp dev server.py
-Add a new tool
-Create a file inside /tools, for example:
+```
 
-Code
-tools/get_user.py
-python
+**4. Run the server**
+```bash
+mcp dev server.py
+```
+
+---
+
+## 🧩 Adding a New Tool
+
+Create a new `.py` file inside `/tools`:
+
+```python
+# tools/get_user.py
+
 from mcp.server.fastmcp import tool
 
 @tool()
-def get_user(user_id: str):
+def get_user(user_id: str) -> dict:
+    """Returns user details for a given user ID."""
     return {"user_id": user_id, "role": "admin"}
-The server will automatically detect it.
+```
 
-⭐ Benefits of This Template
-Easy to reuse — copy the folder to create a new MCP server.
+The server detects and registers it automatically on next startup. No changes needed anywhere else.
 
-No boilerplate — server core never changes.
+---
 
-Auto‑loading tools — drop a file, tool is ready.
+## 📦 Example Tools Included
 
-Fast development — perfect for quick prototypes.
+| File | Function | Description |
+|---|---|---|
+| `tools/ping.py` | `ping()` | Health check — returns `pong` |
+| `tools/math_add.py` | `math_add(a, b)` | Adds two numbers |
 
-Clean structure — tools, resources, and loaders are separated.
+---
 
-Scalable — supports many tools without complexity.
+## ⭐ Why Use This Template
+
+| Feature | Benefit |
+|---|---|
+| **Auto-loading tools** | Drop a file in `/tools` — it's live |
+| **No boilerplate** | Server core never needs to change |
+| **Clean separation** | Tools, resources, and loaders are fully decoupled |
+| **Easy to reuse** | Copy the folder to start a new MCP server instantly |
+| **Fast prototyping** | Go from idea to working tool in under a minute |
+| **Scalable** | Add dozens of tools with zero added complexity |
+
+---
+
+## 🛠️ Requirements
+
+- Python 3.10+
+- `mcp` Python SDK — see `requirements.txt`
+
+---
+
+## 📄 License
+
+MIT — free to use, modify, and distribute.
